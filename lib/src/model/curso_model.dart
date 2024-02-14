@@ -1,14 +1,14 @@
 
 class Cursos {
   
-  List<Curso> cursosTodos = [];
+  List<Curso> cursos = [];
 
   Cursos();
 
   Cursos.fromJsonList(List<dynamic> jsonList) {
     for (var item in jsonList) {
       final cursoItem = Curso.fromJsonMap(item);
-      cursosTodos.add(cursoItem);
+      cursos.add(cursoItem);
     }
   }
 }

@@ -45,7 +45,9 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, 'reporte_envio', arguments: grado);
+        },
         focusColor: Colors.indigo,
         backgroundColor: Colors.indigoAccent,
         child: const Icon(Icons.send_outlined, size: 30),
@@ -54,8 +56,9 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
   }
 
   Widget encabezado() {
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
@@ -93,7 +96,7 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
 
   Widget listaEstudiantes(BuildContext context, List<Alumno> alumnos) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         children: [
           opciones(alumnos),

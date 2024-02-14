@@ -13,17 +13,21 @@ class GradosProvider extends ChangeNotifier with ProviderModel {
   List<Grado> gradosDiario = [];
   List<Grado> gradosFinDeSemana = [];
 
-  
+  GradosProvider(){
+    if(gradosDiario.isEmpty){
+      cargarDatos();
+    }
   }
 
-  Future cargarDatos(String idgrado) async {
+  Future cargarDatos() async {
     setEstado(EstadoProvider.loading);
     const url = urlServicio;
-    
+    final datosUsuario = PreferenciasUsuario().datosUsuario();
     try {
       var map = <String, dynamic>{};
-      map['accion'] = 'cursos';
-      map['idgrado'] = idgrado;
+      map['accion'] = 'grados';
+      map['jornada'] = jornadaDiario;
+      map['idUsuario'] = datosUsuario.idusuario;
 
       final decodeData = await cliente.getPost(map, url);
       if (decodeData["resultado"]) {

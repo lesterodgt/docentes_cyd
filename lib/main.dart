@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'src/pages/reporte_alumnos_page.dart';
+import 'src/pages/reporte_envio_page.dart';
 import 'src/pages/reporte_grados_page.dart';
 import 'src/pages/home_page.dart';
 import 'src/pages/login_page.dart';
 import 'src/provider/alumnos_provider.dart';
+import 'src/provider/cursos_provider.dart';
 import 'src/provider/grados_provider.dart';
 import 'src/provider/login_provider.dart';
 import 'src/utils/preferencias_usuario.dart';
@@ -33,7 +35,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => GradosProvider()),
-        ChangeNotifierProvider(create: (_) => AlumnosProvider()),        
+        ChangeNotifierProvider(create: (_) => AlumnosProvider()),
+        ChangeNotifierProvider(create: (_) => CursosProvider()),
       ],
       child: MaterialApp(
         initialRoute: rutaInicial,
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => const HomePage(),
           'reporte': (BuildContext context) => const ReporteGradosPage(),
           'reporte_alumnos': (BuildContext context) => const ReporteAlumnosPage(),
+          'reporte_envio': (BuildContext context) => const ReporteEnvioPage(),
           }
       ),
     );

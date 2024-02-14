@@ -1,14 +1,14 @@
 
 class Coordinadors {
   
-  List<Coordinador> coordinadorsTodos = [];
+  List<Coordinador> coordinadores = [];
 
   Coordinadors();
 
   Coordinadors.fromJsonList(List<dynamic> jsonList) {
     for (var item in jsonList) {
       final coordinadorItem = Coordinador.fromJsonMap(item);
-      coordinadorsTodos.add(coordinadorItem);
+      coordinadores.add(coordinadorItem);
     }
   }
 }

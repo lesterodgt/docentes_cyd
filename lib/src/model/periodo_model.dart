@@ -1,14 +1,14 @@
 
 class Periodos {
   
-  List<Periodo> periodosTodos = [];
+  List<Periodo> periodos = [];
 
   Periodos();
 
   Periodos.fromJsonList(List<dynamic> jsonList) {
     for (var item in jsonList) {
       final periodoItem = Periodo.fromJsonMap(item);
-      periodosTodos.add(periodoItem);
+      periodos.add(periodoItem);
     }
   }
 }

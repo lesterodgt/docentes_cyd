@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../model/estado_provider.dart';
 import '../model/grado_model.dart';
+import '../provider/alumnos_provider.dart';
 import '../provider/grados_provider.dart';
 import '../utils/constantes.dart';
 
@@ -74,7 +76,10 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
     return Card(
       color: Colors.blue.shade50,
       child: ListTile(
-        onTap: () => Navigator.pushNamed(context, 'reporte_alumnos', arguments: grado),
+        onTap: () { 
+          Navigator.pushNamed(context, 'reporte_alumnos', arguments: grado);
+          Provider.of<AlumnosProvider>(context, listen: false).setEstado(EstadoProvider.initial);
+        },
         title: Text(
           grado.nombre,
           style: const TextStyle(fontSize: 15.0),
