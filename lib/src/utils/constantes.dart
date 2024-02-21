@@ -1,6 +1,7 @@
 
 
 const imagenLogin = "https://www.sicacyd.com/imgsplash/login.png";
+
 const urlServicio = "https://www.sicacyd.com/ws_appdocentesND.php";
 
 const entradaColegio = "1";

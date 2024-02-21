@@ -1,11 +1,16 @@
+import 'package:docentes_cyd/src/provider/catalogo_reportes_provider.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:toast/toast.dart';
 
 import '../model/alumno_model.dart';
+import '../model/curso_model.dart';
 import '../model/estado_provider.dart';
 import '../model/grado_model.dart';
+import '../model/motivo_reporte_model.dart';
+import '../model/periodo_model.dart';
 import '../provider/alumnos_provider.dart';
 import '../provider/cursos_provider.dart';
 
@@ -21,10 +26,29 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
   bool cargado = false;
   late Grado grado;
 
+  String? selectedValueCurso;
+  String? selectedValuePeriodo;
+  String? selectedValueMotivo;
+  String? selectedValueReporte;
+
+  final TextEditingController textCursoController = TextEditingController();
+  final TextEditingController textReporteController = TextEditingController();
+
+  late CatalogoReportesProvider motivosProvider;
+  late List<TipoReporte> tiposReporte = [];
+
+  @override
+  void dispose() {
+    textCursoController.dispose();
+    textReporteController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     grado = ModalRoute.of(context)?.settings.arguments as Grado;
     if (!cargado) {
+      motivosProvider = Provider.of<CatalogoReportesProvider>(context);
       cargado = true;
     }
     return Scaffold(
@@ -44,12 +68,6 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        focusColor: Colors.indigo,
-        backgroundColor: Colors.indigoAccent,
-        child: const Icon(Icons.send_outlined, size: 30),
       ),
     );
   }
@@ -84,7 +102,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
           return Text(notifier.failure!.message);
         } 
         else if (notifier.estado == EstadoProvider.loaded) {
-          return Container();
+          return datos(notifier.periodos, notifier.cursos);
         } else {
           return const Center(child: CircularProgressIndicator());
         }
@@ -92,6 +110,285 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
     );
   }
 
+  Widget datos(List<Periodo> periodos, List<Curso> cursos) {
+    return Column(
+      children: [
+        periodosWidget(periodos),
+        const SizedBox(height: 15),
+        cursosWidget(cursos),
+        const SizedBox(height: 15),
+        catalogoReporteWidget(),
+        const SizedBox(height: 15),
+        tipoReporteWidget(),
+        const SizedBox(height: 15),
+        btnCrearReporte()
+      ],
+    );
+  }
+
+  Widget cursosWidget(List<Curso> cursos) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<String>(
+          isExpanded: true,
+          hint: const Text(
+            'Elegir Curso',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          items: cursos
+              .map((Curso curso) => DropdownMenuItem(
+                    value: "${curso.id};;${curso.nombre.toLowerCase()}",
+                    child: Text(
+                      curso.nombre,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: selectedValueCurso,
+          onChanged: (value) {
+            setState(() {
+              selectedValueCurso = value;
+            });
+          },
+          buttonStyleData: estiloLista,
+          dropdownStyleData: const DropdownStyleData(
+            maxHeight: 200,
+          ),
+          menuItemStyleData: const MenuItemStyleData(
+            height: 50,
+          ),
+          dropdownSearchData: DropdownSearchData(
+            searchController: textCursoController,
+            searchInnerWidgetHeight: 50,
+            searchInnerWidget: Container(
+              height: 50,
+              padding: const EdgeInsets.only(top: 8,bottom: 4,right: 8,left: 8),
+              child: TextFormField(
+                expands: true,
+                maxLines: null,
+                controller: textCursoController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  hintText: 'Buscar',
+                  hintStyle: const TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+            searchMatchFn: (item, searchValue) {
+              return item.value.toString().contains(searchValue.toLowerCase());
+            },
+          ),
+          onMenuStateChange: (isOpen) {
+            if (!isOpen) {
+              textCursoController.clear();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget periodosWidget(List<Periodo> periodos) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<String>(
+          isExpanded: true,
+          hint: const Text(
+            'Elegir Periodo',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          items: periodos
+              .map((Periodo periodo) => DropdownMenuItem(
+                    value: periodo.id,
+                    child: Text(
+                      periodo.nombre,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: selectedValuePeriodo,
+          onChanged: (value) {
+            setState(() {
+              selectedValuePeriodo = value;
+            });
+          },
+          buttonStyleData: estiloLista,
+          dropdownStyleData: const DropdownStyleData(
+            maxHeight: 200,
+          ),
+          menuItemStyleData: const MenuItemStyleData(
+            height: 40,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget catalogoReporteWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<String>(
+          isExpanded: true,
+          hint: const Text(
+            'Motivo',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          items: motivosProvider.motivosReporte
+              .map((GrupoReporte motivo) => DropdownMenuItem(
+                    value: motivo.descripcion,
+                    child: Text(
+                      motivo.descripcion,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: selectedValueMotivo,
+          onChanged: (value) {
+            setState(() {
+              selectedValueMotivo = value;
+              selectedValueReporte = null;
+              GrupoReporte? resultado = motivosProvider.tipoReporteMap[value];
+              tiposReporte = resultado!.tipos;
+            });
+          },
+          buttonStyleData: estiloLista,
+          dropdownStyleData: const DropdownStyleData(
+            maxHeight: 200,
+          ),
+          menuItemStyleData: const MenuItemStyleData(
+            height: 40,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget tipoReporteWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2<String>(
+          isExpanded: true,
+          hint: const Text(
+            'Reporte',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          items: tiposReporte
+              .map((TipoReporte tipo) => DropdownMenuItem(
+                    value: tipo.descripcion,
+                    child: Text(
+                      tipo.descripcion,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: selectedValueReporte,
+          onChanged: (value) {
+            setState(() {
+              selectedValueReporte = value;
+            });
+          },
+          buttonStyleData: estiloLista,
+          dropdownStyleData: const DropdownStyleData(
+            maxHeight: 200,
+          ),
+          menuItemStyleData: const MenuItemStyleData(
+            height: 50,
+          ),
+          dropdownSearchData: DropdownSearchData(
+            searchController: textReporteController,
+            searchInnerWidgetHeight: 50,
+            searchInnerWidget: Container(
+              height: 50,
+              padding: const EdgeInsets.only(top: 8,bottom: 4,right: 8,left: 8),
+              child: TextFormField(
+                expands: true,
+                maxLines: null,
+                controller: textReporteController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  hintText: 'Buscar',
+                  hintStyle: const TextStyle(fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ),
+            searchMatchFn: (item, searchValue) {
+              return item.value.toString().contains(searchValue.toLowerCase());
+            },
+          ),
+          onMenuStateChange: (isOpen) {
+            if (!isOpen) {
+              textReporteController.clear();
+            }
+          },
+        ),
+      ),
+    );
+  }
   
+  final estiloLista = ButtonStyleData(
+    padding: const EdgeInsets.symmetric(horizontal: 26),
+    height: 50,
+    width: double.infinity,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: Colors.black26),
+      color: Colors.white,
+    ),
+    elevation: 2,
+  );
+
+
+  Widget btnCrearReporte(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: ElevatedButton.icon(
+        icon: const Icon(Icons.send, size: 35, color: Colors.white),
+        onPressed: () {
+          //TODO: implementar envio de reporte
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.blue),
+        label: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Text("Crear reporte", style: TextStyle(fontSize: 20)),
+        )
+      ),
+    ); 
+  }
 
 }

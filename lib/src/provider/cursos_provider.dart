@@ -12,16 +12,22 @@ class CursosProvider extends ChangeNotifier with ProviderModel {
   List<Periodo> periodos = [];
   List<Curso> cursos = [];
 
+  
+  limpiar() {
+    setEstado(EstadoProvider.initial);
+    periodos = [];
+    cursos = [];
+  }
+
   Future cargarDatos(String idgrado) async {
     setEstado(EstadoProvider.loading);
-    const url = urlServicio;
     
     try {
       var map = <String, dynamic>{};
       map['accion'] = 'cursos';
       map['idgrado'] = idgrado;
 
-      final decodeData = await cliente.getPost(map, url);
+      final decodeData = await cliente.getPost(map, urlServicio);
       if (decodeData["resultado"]) {
         periodos =  Periodos.fromJsonList(decodeData["periodos"]).periodos;
         cursos =  Cursos.fromJsonList(decodeData["cursos"]).cursos;

@@ -14,14 +14,13 @@ class AlumnosProvider extends ChangeNotifier with ProviderModel {
 
   Future cargarDatos(String idgrado) async {
     setEstado(EstadoProvider.loading);
-    const url = urlServicio;
     
     try {
       var map = <String, dynamic>{};
       map['accion'] = 'alumnosgrados';
       map['idgrado'] = idgrado;
 
-      final decodeData = await cliente.getPost(map, url);
+      final decodeData = await cliente.getPost(map, urlServicio);
 
       if (decodeData["resultado"]) {
         Alumnos datos =  Alumnos.fromJsonList(decodeData["alumnos"]);

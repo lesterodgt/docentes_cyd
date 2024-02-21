@@ -7,6 +7,7 @@ import 'src/pages/reporte_grados_page.dart';
 import 'src/pages/home_page.dart';
 import 'src/pages/login_page.dart';
 import 'src/provider/alumnos_provider.dart';
+import 'src/provider/catalogo_reportes_provider.dart';
 import 'src/provider/cursos_provider.dart';
 import 'src/provider/grados_provider.dart';
 import 'src/provider/login_provider.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => GradosProvider()),
         ChangeNotifierProvider(create: (_) => AlumnosProvider()),
         ChangeNotifierProvider(create: (_) => CursosProvider()),
+        ChangeNotifierProvider(create: (_) => CatalogoReportesProvider()),
       ],
       child: MaterialApp(
         initialRoute: rutaInicial,

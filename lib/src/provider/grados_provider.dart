@@ -21,15 +21,15 @@ class GradosProvider extends ChangeNotifier with ProviderModel {
 
   Future cargarDatos() async {
     setEstado(EstadoProvider.loading);
-    const url = urlServicio;
+    
     final datosUsuario = PreferenciasUsuario().datosUsuario();
     try {
       var map = <String, dynamic>{};
       map['accion'] = 'grados';
       map['jornada'] = jornadaDiario;
-      map['idUsuario'] = datosUsuario.idusuario;
+      map['idUsuario'] = datosUsuario.idtipousuario=="2"? datosUsuario.idusuario: "0";
 
-      final decodeData = await cliente.getPost(map, url);
+      final decodeData = await cliente.getPost(map, urlServicio);
       if (decodeData["resultado"]) {
         gradosDiario =  Grados.fromJsonList(decodeData["registros"]).grados;
       } else {
@@ -37,7 +37,7 @@ class GradosProvider extends ChangeNotifier with ProviderModel {
       }
 
       map['jornada'] = jornadaFinDesemana;
-      final decodeData2 = await cliente.getPost(map, url);
+      final decodeData2 = await cliente.getPost(map, urlServicio);
       if (decodeData2["resultado"]) {
         gradosFinDeSemana =  Grados.fromJsonList(decodeData2["registros"]).grados;        
       } else {

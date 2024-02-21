@@ -1,3 +1,4 @@
+import 'package:docentes_cyd/src/provider/cursos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -46,6 +47,7 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Provider.of<CursosProvider>(context, listen: false).limpiar();
           Navigator.pushNamed(context, 'reporte_envio', arguments: grado);
         },
         focusColor: Colors.indigo,
