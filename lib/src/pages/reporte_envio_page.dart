@@ -31,6 +31,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
   String? selectedValuePeriodo;
   String? selectedValueMotivo;
   String? selectedValueReporte;
+  String? idtipotarea;
 
   final TextEditingController textCursoController = TextEditingController();
   final TextEditingController textReporteController = TextEditingController();
@@ -202,6 +203,9 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
   }
 
   Widget periodosWidget(List<Periodo> periodos) {
+    if(selectedValuePeriodo == null && periodos.isNotEmpty){
+      selectedValuePeriodo = periodos.first.id;
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: DropdownButtonHideUnderline(
@@ -271,6 +275,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
               selectedValueMotivo = value;
               selectedValueReporte = null;
               GrupoReporte? resultado = motivosProvider.tipoReporteMap[value];
+              idtipotarea = resultado!.id;
               tiposReporte = resultado!.tipos;
             });
           },
@@ -386,9 +391,9 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
           }
           ReportesProvider reportesProvider = Provider.of<ReportesProvider>(context, listen: false);
           bool resultado = await reportesProvider.enviarReporte( 
-            alumnosEnviar,  selectedValueCurso!, 
-            selectedValuePeriodo!,  textReporteController.text, 
-            selectedValueMotivo!
+            alumnosEnviar,  selectedValueCurso!.split(";;").first, 
+            selectedValuePeriodo!,  selectedValueReporte!, 
+            idtipotarea!
           );
           if(resultado){
             Toast.show("Reporte ingresado correctamente",duration: Toast.lengthLong, gravity: Toast.center);

@@ -6,6 +6,7 @@ import '../provider/post_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../model/provider_model.dart';
+import '../utils/constantes.dart';
 import '../utils/preferencias_usuario.dart';
 
 class ReportesProvider extends ChangeNotifier with ProviderModel {
@@ -15,7 +16,6 @@ class ReportesProvider extends ChangeNotifier with ProviderModel {
     String observacion, String idtipotarea
   ) async {
     
-    const url = "https://sistemaestecapc.com/ws_asistencia.php";
     try {
       final preferencias = PreferenciasUsuario();
       Usuario usuario = preferencias.datosUsuario();
@@ -30,7 +30,7 @@ class ReportesProvider extends ChangeNotifier with ProviderModel {
       map['nusuario'] = usuario.nombre;
       map['idtipotarea'] = idtipotarea;
 
-      final decodeData = await cliente.getPost(map, url);
+      final decodeData = await cliente.getPost(map, urlServicio);
       debugPrint(decodeData["mensaje"]);
        return decodeData["resultado"];
     } on Failure {
