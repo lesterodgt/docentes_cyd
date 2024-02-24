@@ -13,6 +13,7 @@ import '../model/motivo_reporte_model.dart';
 import '../model/periodo_model.dart';
 import '../provider/alumnos_provider.dart';
 import '../provider/cursos_provider.dart';
+import '../provider/reportes_provider.dart';
 
 class ReporteEnvioPage extends StatefulWidget {
   const ReporteEnvioPage({super.key});
@@ -377,8 +378,25 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: ElevatedButton.icon(
         icon: const Icon(Icons.send, size: 35, color: Colors.white),
-        onPressed: () {
-          //TODO: implementar envio de reporte
+        onPressed: () async {
+          final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
+          List<Alumno> alumnosEnviar = [];
+          for (var alumno in alumnosProvider.alumnosTodos) {
+            if (alumno.marcado) alumnosEnviar.add(alumno);
+          }
+          ReportesProvider reportesProvider = Provider.of<ReportesProvider>(context, listen: false);
+          bool resultado = await reportesProvider.enviarReporte( 
+            alumnosEnviar,  selectedValueCurso!, 
+            selectedValuePeriodo!,  textReporteController.text, 
+            selectedValueMotivo!
+          );
+          if(resultado){
+            Toast.show("Reporte ingresado correctamente",duration: Toast.lengthLong, gravity: Toast.center);
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+          }else{
+            Toast.show("No fue posible ingresar reporte",duration: Toast.lengthLong, gravity: Toast.center);
+          }
         },
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,

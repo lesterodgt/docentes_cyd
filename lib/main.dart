@@ -11,6 +11,7 @@ import 'src/provider/catalogo_reportes_provider.dart';
 import 'src/provider/cursos_provider.dart';
 import 'src/provider/grados_provider.dart';
 import 'src/provider/login_provider.dart';
+import 'src/provider/reportes_provider.dart';
 import 'src/utils/preferencias_usuario.dart';
 
 Future<void> main() async {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AlumnosProvider()),
         ChangeNotifierProvider(create: (_) => CursosProvider()),
         ChangeNotifierProvider(create: (_) => CatalogoReportesProvider()),
+        ChangeNotifierProvider(create: (_) => ReportesProvider()),
       ],
       child: MaterialApp(
         initialRoute: rutaInicial,

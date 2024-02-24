@@ -28,14 +28,12 @@ class CatalogoReportesProvider extends ChangeNotifier with ProviderModel {
     
     try {
       var map = <String, dynamic>{};
-      map['accion'] = 'tiporeportes';
+      map['accion'] = 'tiporespuestas';
       final decodeData = await cliente.getPost(map, urlServicio);
       if (decodeData["resultado"]) {
         MotivosReporte motivos = MotivosReporte.fromJsonList(decodeData["tiporespuestas"]);
         motivosReporte = motivos.motivos;
         tipoReporteMap = motivos.tipoReporteMap;
-        
-        setFailure(Failure(4, decodeData["mensaje"]));
       }
     } on Failure catch (f) {
       setFailure(f);

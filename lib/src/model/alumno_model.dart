@@ -38,7 +38,9 @@ class Alumno {
   }
 
   Map toJson() => {
-    'idAlumno': idalumno
+    'idalumno': idalumno,
+    'nombreAlumno': nombreAlumno,
+    'plandiario': plandiario,
   };
   
 }

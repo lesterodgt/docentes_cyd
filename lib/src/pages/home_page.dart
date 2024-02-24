@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
+import '../provider/catalogo_reportes_provider.dart';
 import '../provider/grados_provider.dart';
 import '../provider/login_provider.dart';
 
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     
     if(!cargado){
+      Provider.of<CatalogoReportesProvider>(context);
       Provider.of<GradosProvider>(context);
       cargado = true;
     }
