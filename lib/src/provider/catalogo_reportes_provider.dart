@@ -27,8 +27,10 @@ class CatalogoReportesProvider extends ChangeNotifier with ProviderModel {
     motivosReporte = [];
     
     try {
+      final datosUsuario = PreferenciasUsuario().datosUsuario();
       var map = <String, dynamic>{};
       map['accion'] = 'tiporespuestas';
+      map['idusuario'] = datosUsuario.idusuario;
       final decodeData = await cliente.getPost(map, urlServicio);
       if (decodeData["resultado"]) {
         MotivosReporte motivos = MotivosReporte.fromJsonList(decodeData["tiporespuestas"]);

@@ -276,7 +276,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
               selectedValueReporte = null;
               GrupoReporte? resultado = motivosProvider.tipoReporteMap[value];
               idtipotarea = resultado!.id;
-              tiposReporte = resultado!.tipos;
+              tiposReporte = resultado.tipos;
             });
           },
           buttonStyleData: estiloLista,
