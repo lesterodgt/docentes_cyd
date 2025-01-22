@@ -38,7 +38,7 @@ class GrupoReporte {
   });
 
   GrupoReporte.fromJsonMap(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     descripcion = json['descripcion'];
     for (var item in json['respuestas']) {
       final tipo = TipoReporte.fromJsonMap(item);
@@ -64,7 +64,7 @@ class TipoReporte {
   });
 
   TipoReporte.fromJsonMap(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     descripcion = json['descripcion'].trim();
   }
 

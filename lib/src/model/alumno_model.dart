@@ -30,9 +30,9 @@ class Alumno {
   });
 
   Alumno.fromJsonMap(Map<String, dynamic> json) {
-    idalumno = json['idalumno'];
+    idalumno = json['idalumno'].toString();
     nombreAlumno = json['nombreAlumno'];
-    plandiario = json['plandiario']??'';
+    plandiario = json['plandiario'].toString();
     estado = json['estado'];
     descripcionestado = json['descripcionestado'];
   }

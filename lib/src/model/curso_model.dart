@@ -23,7 +23,7 @@ class Curso {
   });
 
   Curso.fromJsonMap(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     nombre = json['nombre'].trim();
   }
 

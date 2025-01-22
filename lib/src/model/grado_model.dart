@@ -23,8 +23,8 @@ class Grado {
   });
 
   Grado.fromJsonMap(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     nombre = json['nombre'];
-    plandiario = json['plandiario'];
+    plandiario = json['plandiario'].toString();
   }
 }
