@@ -12,10 +12,10 @@ class Usuario {
   });
 
   Usuario.fromJsonMap(Map<String, dynamic> json) {
-    idusuario = json['idusuario'];
+    idusuario = json['idusuario'].toString();
     usuario = json['usuario'];
     nombre = json['nombre'];
-    idtipousuario = json['idtipousuario'];
+    idtipousuario = json['idtipousuario'].toString();
   }
 
   Map<String, dynamic> toJson() => {
