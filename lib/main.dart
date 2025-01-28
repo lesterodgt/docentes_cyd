@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReportesProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: rutaInicial,
         title: 'Docentes CYD',
         theme: ThemeData(
