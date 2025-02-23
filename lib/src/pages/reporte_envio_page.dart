@@ -378,40 +378,57 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
   );
 
 
-  Widget btnCrearReporte(){
+  Widget btnCrearReporte() {
+    bool habilitado = selectedValueCurso != null &&
+        selectedValuePeriodo != null &&
+        selectedValueReporte != null &&
+        idtipotarea != null;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ElevatedButton.icon(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Agrega padding al contenedor
+      child: FilledButton.icon(
         icon: const Icon(Icons.send, size: 35, color: Colors.white),
-        onPressed: () async {
-          final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
-          List<Alumno> alumnosEnviar = [];
-          for (var alumno in alumnosProvider.alumnosTodos) {
-            if (alumno.marcado) alumnosEnviar.add(alumno);
-          }
-          ReportesProvider reportesProvider = Provider.of<ReportesProvider>(context, listen: false);
-          bool resultado = await reportesProvider.enviarReporte( 
-            alumnosEnviar,  selectedValueCurso!.split(";;").first, 
-            selectedValuePeriodo!,  selectedValueReporte!, 
-            idtipotarea!
-          );
-          if(resultado){
-            Toast.show("Reporte ingresado correctamente",duration: Toast.lengthLong, gravity: Toast.center);
-            // ignore: use_build_context_synchronously
-            Navigator.of(context).pop();
-          }else{
-            Toast.show("No fue posible ingresar reporte",duration: Toast.lengthLong, gravity: Toast.center);
-          }
-        },
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.blue),
-        label: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0),
-          child: Text("Crear reporte", style: TextStyle(fontSize: 20)),
-        )
+        onPressed: habilitado
+            ? () async {
+                final alumnosProvider =
+                    Provider.of<AlumnosProvider>(context, listen: false);
+                List<Alumno> alumnosEnviar = alumnosProvider.alumnosTodos
+                    .where((alumno) => alumno.marcado)
+                    .toList();
+
+                ReportesProvider reportesProvider =
+                    Provider.of<ReportesProvider>(context, listen: false);
+                bool resultado = await reportesProvider.enviarReporte(
+                  alumnosEnviar,
+                  selectedValueCurso!.split(";;").first,
+                  selectedValuePeriodo!,
+                  selectedValueReporte!,
+                  idtipotarea!,
+                );
+
+                if (resultado) {
+                  Toast.show("Reporte ingresado correctamente",
+                      duration: Toast.lengthLong, gravity: Toast.center);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                } else {
+                  Toast.show("No fue posible ingresar reporte",
+                      duration: Toast.lengthLong, gravity: Toast.center);
+                }
+              }
+            : null, // Deshabilita el botón si la condición no se cumple
+
+        style: FilledButton.styleFrom(
+          backgroundColor: habilitado ? Colors.blue : Colors.grey, // Cambia color cuando está deshabilitado
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20), // Ajusta padding dentro del botón
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), // Bordes redondeados
+        ),
+
+        label: const Text("Crear reporte", 
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
-    ); 
+    );
   }
+
 
 }

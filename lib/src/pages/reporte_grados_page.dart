@@ -20,29 +20,23 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
   List<Grado> gradosDiario = [];
   List<Grado> gradosFinDeSemana = [];
   List<Grado> gradosMostrar = [];
-  
+
   TextEditingController txtBuscarDiario = TextEditingController();
   String jornada = "1";
 
   @override
   Widget build(BuildContext context) {
-    if (!cargado) {
-      GradosProvider gradosProvider = Provider.of<GradosProvider>(context);
-      gradosDiario = gradosProvider.gradosDiario;
-      gradosFinDeSemana = gradosProvider.gradosFinDeSemana;
-      gradosMostrar = gradosDiario;
-
-      cargado = true;
-    }
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Grados"),
+        title: const Text("Grados", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.blueAccent,
       ),
-      body: ListView(
+      body: Column(
         children: [
           jornadaWidget(),
           buscarDiario(),
-          listaGrados(context, gradosMostrar),
+          Expanded(child: contenido(context)),
         ],
       ),
     );
@@ -50,89 +44,95 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
 
   Widget listaGrados(BuildContext context, List<Grado> grados) {
     return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            primary: false,
-            itemCount: grados.length,
-            itemBuilder: (context, index) {
-              final grado = grados.elementAt(index);
-              return itemArchivo(context, grado);
-            },
-          
+      itemCount: grados.length,
+      itemBuilder: (context, index) {
+        final grado = grados[index];
+        return itemArchivo(context, grado);
+      },
     );
   }
 
-  Widget encabezado() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 1),
-      child: Text(
-        "Asitencia por grados",
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-      ),
+  Widget contenido(BuildContext context) {
+    return Consumer<GradosProvider>(
+      builder: (_, notifier, __) {
+        if (notifier.estado == EstadoProvider.initial) {
+          notifier.cargarDatos();
+          return const Center(child: CircularProgressIndicator());
+        } else if (notifier.estado == EstadoProvider.error) {
+          return Center(child: Text(notifier.failure!.message, style: const TextStyle(color: Colors.red)));
+        } else if (notifier.estado == EstadoProvider.loaded) {
+          if (!cargado) {
+            gradosDiario = notifier.gradosDiario;
+            gradosFinDeSemana = notifier.gradosFinDeSemana;
+            gradosMostrar = gradosDiario;
+            cargado = true;
+          }
+          return listaGrados(context, gradosMostrar);
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 
   Widget itemArchivo(BuildContext context, Grado grado) {
     return Card(
-      color: Colors.blue.shade50,
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
-        onTap: () { 
+        onTap: () {
+          final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
+          alumnosProvider.cargarDatos(grado.id);
           Navigator.pushNamed(context, 'reporte_alumnos', arguments: grado);
-          Provider.of<AlumnosProvider>(context, listen: false).setEstado(EstadoProvider.initial);
         },
         title: Text(
           grado.nombre,
-          style: const TextStyle(fontSize: 15.0),
+          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
         ),
       ),
     );
   }
 
   Widget jornadaWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        MaterialButton(
-          padding: const EdgeInsets.symmetric(vertical: 5.0),
-          color: jornada==jornadaDiario?Colors.blue: Colors.grey,
-          onPressed: () {
-            if(jornada==jornadaFinDesemana){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
               setState(() {
-                jornada = jornadaDiario;
+                jornada = "1";
                 txtBuscarDiario.text = "";
-                gradosMostrar = jornada==jornadaDiario?gradosDiario:gradosFinDeSemana;
+                gradosMostrar = gradosDiario;
               });
-            }
-          },
-          child: const Text(
-            'Diario',
-            style: TextStyle(fontSize: 17, color: Colors.white,),
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: jornada == "1" ? Colors.blue : Colors.grey,
+            ),
+            child: const Text("Diario", style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
-        ),
-        MaterialButton(
-          padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-          color: jornada==jornadaFinDesemana?Colors.blue: Colors.grey,
-          onPressed: () {
-            if(jornada==jornadaDiario){
+          ElevatedButton(
+            onPressed: () {
               setState(() {
-                jornada = jornadaFinDesemana;
-                txtBuscarDiario.text= "";
-                gradosMostrar = jornada ==jornadaDiario?gradosDiario:gradosFinDeSemana;
+                jornada = "2";
+                txtBuscarDiario.text = "";
+                gradosMostrar = gradosFinDeSemana;
               });
-            }
-          },
-          child: const Text(
-            'Fin de semana',
-            style: TextStyle(fontSize: 17, color: Colors.white,),
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: jornada == "2" ? Colors.blue : Colors.grey,
+            ),
+            child: const Text("Fin de semana", style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget buscarDiario() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: TextFormField(
         controller: txtBuscarDiario,
         onChanged: search,
@@ -140,11 +140,7 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
           labelText: "Buscar",
           hintText: "Buscar",
           prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(25.0),
-            ),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
         ),
       ),
     );
@@ -153,19 +149,13 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
   void search(String query) {
     if (query.isEmpty) {
       setState(() {
-        gradosMostrar = jornada=="1"?gradosDiario:gradosFinDeSemana;
+        gradosMostrar = jornada == "1" ? gradosDiario : gradosFinDeSemana;
       });
       return;
     }
     query = query.toLowerCase();
-    List<Grado> base = jornada=="1"?gradosDiario:gradosFinDeSemana;
-    List<Grado> result = [];
-    for (var grado in base) {
-      var nombre = grado.nombre.toLowerCase();
-      if (nombre.contains(query)) {
-        result.add(grado);
-      }
-    }
+    List<Grado> base = jornada == "1" ? gradosDiario : gradosFinDeSemana;
+    List<Grado> result = base.where((grado) => grado.nombre.toLowerCase().contains(query)).toList();
     setState(() {
       gradosMostrar = result;
     });
