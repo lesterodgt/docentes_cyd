@@ -9,7 +9,7 @@ const salidaColegio= "2";
 const entradaTaller = "4";
 const salidaTaller = "5";
 
-const VERSION = "2.1";
+const VERSION = "2.2";
 const jornadaDiario = "1";
 const jornadaFinDesemana = "2";
 
