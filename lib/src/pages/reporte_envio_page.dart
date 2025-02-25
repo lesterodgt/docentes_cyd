@@ -38,6 +38,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
 
   late CatalogoReportesProvider motivosProvider;
   late List<TipoReporte> tiposReporte = [];
+  bool enviando = false;
 
   @override
   void dispose() {
@@ -48,6 +49,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     grado = ModalRoute.of(context)?.settings.arguments as Grado;
     if (!cargado) {
       motivosProvider = Provider.of<CatalogoReportesProvider>(context);
@@ -65,6 +67,7 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
                   header: encabezado(),
                   content: contenido(context),
                 ),
+                 if (enviando) _cargandoPantalla(),
                 const SizedBox(height: 100)
               ],
             ),
@@ -382,41 +385,14 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
     bool habilitado = selectedValueCurso != null &&
         selectedValuePeriodo != null &&
         selectedValueReporte != null &&
-        idtipotarea != null;
+        idtipotarea != null
+        && !enviando;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15), // Agrega padding al contenedor
       child: FilledButton.icon(
         icon: const Icon(Icons.send, size: 35, color: Colors.white),
-        onPressed: habilitado
-            ? () async {
-                final alumnosProvider =
-                    Provider.of<AlumnosProvider>(context, listen: false);
-                List<Alumno> alumnosEnviar = alumnosProvider.alumnosTodos
-                    .where((alumno) => alumno.marcado)
-                    .toList();
-
-                ReportesProvider reportesProvider =
-                    Provider.of<ReportesProvider>(context, listen: false);
-                bool resultado = await reportesProvider.enviarReporte(
-                  alumnosEnviar,
-                  selectedValueCurso!.split(";;").first,
-                  selectedValuePeriodo!,
-                  selectedValueReporte!,
-                  idtipotarea!,
-                );
-
-                if (resultado) {
-                  Toast.show("Reporte ingresado correctamente",
-                      duration: Toast.lengthLong, gravity: Toast.center);
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                } else {
-                  Toast.show("No fue posible ingresar reporte",
-                      duration: Toast.lengthLong, gravity: Toast.center);
-                }
-              }
-            : null, // Deshabilita el botón si la condición no se cumple
-
+        onPressed: habilitado ? _enviarReporte : null, // Deshabilita el botón si la condición no se cumple
         style: FilledButton.styleFrom(
           backgroundColor: habilitado ? Colors.blue : Colors.grey, // Cambia color cuando está deshabilitado
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20), // Ajusta padding dentro del botón
@@ -426,6 +402,46 @@ class _ReporteEnvioPageState extends State<ReporteEnvioPage> {
         label: const Text("Crear reporte", 
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
+      ),
+    );
+  }
+
+  Future<void> _enviarReporte() async {
+    setState(() => enviando = true);
+
+    final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
+    List<Alumno> alumnosEnviar = alumnosProvider.alumnosTodos.where((alumno) => alumno.marcado).toList();
+
+    ReportesProvider reportesProvider = Provider.of<ReportesProvider>(context, listen: false);
+    bool resultado = await reportesProvider.enviarReporte(
+      alumnosEnviar,
+      selectedValueCurso!.split(";;").first,
+      selectedValuePeriodo!,
+      selectedValueReporte!,
+      idtipotarea!,
+    );
+
+    setState(() => enviando = false);
+
+    if (resultado) {
+      Toast.show("Reporte ingresado correctamente", duration: Toast.lengthLong, gravity: Toast.center);
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } else {
+      Toast.show("No fue posible ingresar reporte", duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+   Widget _cargandoPantalla() {
+    return Container(
+      color: Colors.black.withOpacity(0.3),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 10),
+          Text("Enviando reporte...", style: TextStyle(color: Colors.white, fontSize: 18))
+        ],
       ),
     );
   }
