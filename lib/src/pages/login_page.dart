@@ -67,12 +67,15 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 10.0),
+                  Text("Versión $VERSION"),
+                  const SizedBox(height: 10.0),
                   _crearUsuario(loginProvider, context),
                   const SizedBox(height: 20.0),
                   _crearPassword(loginProvider, context),
-                  const SizedBox(height: 70.0),
+                  const SizedBox(height: 20.0),
                   _crearBoton(context),
+                  const SizedBox(height: 10.0),
                 ],
               ),
             ),

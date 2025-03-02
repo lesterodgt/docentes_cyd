@@ -14,7 +14,7 @@ class AlumnosProvider extends ChangeNotifier with ProviderModel {
 
   Future cargarDatos(String idgrado) async {
     setEstado(EstadoProvider.loading);
-    
+    alumnosTodos = [];
     try {
       var map = <String, dynamic>{};
       map['accion'] = 'alumnosgrados';

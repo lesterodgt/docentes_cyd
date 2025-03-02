@@ -10,9 +10,8 @@ import '../model/grado_model.dart';
 import '../provider/alumnos_provider.dart';
 
 class ReporteAlumnosPage extends StatefulWidget {
-  const ReporteAlumnosPage({super.key});
+  const ReporteAlumnosPage({Key? key}) : super(key: key);
 
-  
   @override
   State<ReporteAlumnosPage> createState() => _ReporteAlumnosPageState();
 }
@@ -28,66 +27,67 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
       cargado = true;
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('Estudiantes')),
-      body: Builder(
-        builder: (BuildContext context) {
-          return Container(
-            alignment: Alignment.center,
-            child: ListView(
-              children: [
-                StickyHeader(
-                  header: encabezado(),
-                  content: contenido(context),
-                ),
-                const SizedBox(height: 100)
-              ],
-            ),
-          );
-        },
+      appBar: AppBar(
+        title: const Text('Estudiantes', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.blueAccent,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<CursosProvider>(context, listen: false).limpiar();
-          Navigator.pushNamed(context, 'reporte_envio', arguments: grado);
-        },
-        focusColor: Colors.indigo,
-        backgroundColor: Colors.indigoAccent,
-        child: const Icon(Icons.send_outlined, size: 30),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            encabezado(),
+            Expanded(child: contenido(context)),
+          ],
+        ),
       ),
+      floatingActionButton:botonEnviar(grado)
+    );
+  }
+
+  Widget botonEnviar(Grado grado) {
+    final alumnosTodos = Provider.of<AlumnosProvider>(context, listen: false).alumnosTodos;
+    bool hayMarcados = alumnosTodos.any((alumno) => alumno.marcado);
+    //bool hayMarcados = true;
+    return FloatingActionButton(
+      onPressed: hayMarcados
+          ? () {
+              Provider.of<CursosProvider>(context, listen: false).limpiar();
+              Navigator.pushNamed(context, 'reporte_envio', arguments: grado);
+            }
+          : null,
+      backgroundColor: hayMarcados ? Colors.indigoAccent : Colors.grey,
+      child: const Icon(Icons.send_outlined, size: 30, color: Colors.white),
     );
   }
 
   Widget encabezado() {
     return Container(
       width: double.infinity,
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          children: [
-            Text(
-              grado.nombre,
-              textAlign: TextAlign.center,
-              style:
-                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-          ],
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+      ),
+      child: Center(
+        child: Text(
+          grado.nombre,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueGrey),
         ),
       ),
     );
   }
 
   Widget contenido(BuildContext context) {
-    final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
     return Consumer<AlumnosProvider>(
       builder: (_, notifier, __) {
         if (notifier.estado == EstadoProvider.initial) {
-          alumnosProvider.cargarDatos(grado.id);
+          notifier.cargarDatos(grado.id);
           return const Center(child: CircularProgressIndicator());
-        }else if (notifier.estado == EstadoProvider.error) {
-          return Text(notifier.failure!.message);
-        } 
-        else if (notifier.estado == EstadoProvider.loaded) {
+        } else if (notifier.estado == EstadoProvider.error) {
+          return Center(child: Text(notifier.failure!.message, style: const TextStyle(color: Colors.red)));
+        } else if (notifier.estado == EstadoProvider.loaded) {
           return listaEstudiantes(context, notifier.alumnosTodos);
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -97,84 +97,97 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
   }
 
   Widget listaEstudiantes(BuildContext context, List<Alumno> alumnos) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Column(
-        children: [
-          opciones(alumnos),
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            primary: false,
+    return Column(
+      children: [
+        opciones(alumnos),
+        Expanded(
+          child: ListView.builder(
             itemCount: alumnos.length,
             itemBuilder: (context, index) {
-              final alumno = alumnos.elementAt(index);
+              final alumno = alumnos[index];
               return itemAlumno(context, alumno);
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget itemAlumno(BuildContext context, Alumno alumno) {
-    Widget icono = alumno.marcado
-        ? const Icon(Icons.check_box, color: Colors.green)
-        : const Icon(Icons.check_box_outline_blank, color: Colors.grey);
-    return Card(
-      child: ListTile(
-        leading: icono,
-        minLeadingWidth: 0,
-        title: Text(
-          alumno.nombreAlumno,
-          style: const TextStyle(fontSize: 15.0),
-        ),
-        onTap: () {
-          setState(() {
-            alumno.marcado = !alumno.marcado;
-          });
-        },
-      ),
-    );
-  }
-  
-  
-   Widget opciones(List<Alumno> alumnos) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        MaterialButton(
-          padding: const EdgeInsets.symmetric(vertical: 5.0),
-          color: Colors.blue,
-          onPressed: () {
-            setState(() {
-              for (var alumno in alumnos) {
-                alumno.marcado = true;
-              }
-            });
-          },
-          child: const Text(
-            'Todos',
-            style: TextStyle(fontSize: 17, color: Colors.white,),
-          ),
-        ),
-        MaterialButton(
-          padding: const EdgeInsets.symmetric(vertical: 5.0),
-          color: Colors.orangeAccent,
-          onPressed: () {
-            setState(() {
-              for (var alumno in alumnos) {
-                alumno.marcado = false;
-              }
-            });
-          },
-          child: const Text(
-            'Ninguno',
-            style: TextStyle(fontSize: 17, color: Colors.white,),
           ),
         ),
       ],
     );
   }
 
+  Widget itemAlumno(BuildContext context, Alumno alumno) {
+    // Determinar colores de fondo y de texto
+    Color cardColor;
+    Color textColor;
+
+    if (alumno.estado == "1") {
+      cardColor = Colors.blue.shade100; // Color para alumnos con permiso
+      textColor = Colors.blue.shade900;
+    } else if (alumno.marcado) {
+      cardColor = Colors.green.shade100; // Color para alumnos seleccionados
+      textColor = Colors.green.shade900;
+    } else {
+      cardColor = Colors.white; // Color por defecto
+      textColor = Colors.black;
+    }
+
+    // Determinar ícono
+    Widget iconoFinal = alumno.estado == "1"
+        ? const Icon(Icons.supervisor_account_sharp, color: Colors.blue)
+        : (alumno.marcado
+            ? const Icon(Icons.check_box, color: Colors.green)
+            : const Icon(Icons.check_box_outline_blank, color: Colors.grey));
+
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: cardColor,
+      child: ListTile(
+        leading: iconoFinal,
+        title: Text(
+          alumno.nombreAlumno,
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: textColor),
+        ),
+        onTap: alumno.estado == "1"
+            ? null // No permite tocar si el alumno tiene permiso
+            : () {
+                setState(() {
+                  alumno.marcado = !alumno.marcado;
+                });
+              },
+      ),
+    );
+  }
+
+
+  Widget opciones(List<Alumno> alumnos) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                for (var alumno in alumnos) {
+                  alumno.marcado = true;
+                }
+              });
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            child: const Text('Todos', style: TextStyle(fontSize: 17, color: Colors.white)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                for (var alumno in alumnos) {
+                  alumno.marcado = false;
+                }
+              });
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
+            child: const Text('Ninguno', style: TextStyle(fontSize: 17, color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
 }

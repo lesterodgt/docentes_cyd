@@ -42,6 +42,7 @@ dependencies:
   provider: ^6.1.1
   sticky_headers: ^0.3.0+2
   dropdown_button2: ^2.1.4
+  upgrader: ^6.2.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
@@ -71,9 +72,13 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/imagenes/reservas.png
+    - assets/imagenes/reportes.png
+    - assets/imagenes/docente.png
+    - assets/imagenes/footer.png
+    - assets/imagenes/logo_cyd.png
+    - assets/imagenes/pizarra.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
