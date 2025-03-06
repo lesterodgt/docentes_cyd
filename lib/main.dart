@@ -15,7 +15,7 @@ import 'src/provider/reportes_provider.dart';
 import 'src/utils/preferencias_usuario.dart';
 
 Future<void> main() async {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   final datosAlumno = PreferenciasUsuario();
   await datosAlumno.initPrefs();
@@ -43,29 +43,28 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReportesProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: rutaInicial,
-        title: 'Docentes CYD',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Scaffold(
-          appBar: AppBar(title: const Text('Docentes CYD')),
-          body: Builder(
-            builder: (BuildContext context) {
-              return Container();
-            },
+          debugShowCheckedModeBanner: false,
+          initialRoute: rutaInicial,
+          title: 'Docentes CYD',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
           ),
-        ),
-        routes: {
-          'login': (BuildContext context) => const LoginPage(),
-          'home': (BuildContext context) => const HomePage(),
-          'reporte': (BuildContext context) => const ReporteGradosPage(),
-          'reporte_alumnos': (BuildContext context) => const ReporteAlumnosPage(),
-          'reporte_envio': (BuildContext context) => const ReporteEnvioPage(),
-          }
-      ),
+          home: Scaffold(
+            appBar: AppBar(title: const Text('Docentes CYD')),
+            body: Builder(
+              builder: (BuildContext context) {
+                return Container();
+              },
+            ),
+          ),
+          routes: {
+            'login': (BuildContext context) => const LoginPage(),
+            'home': (BuildContext context) => const HomePage(),
+            'reporte': (BuildContext context) => const ReporteGradosPage(),
+            'reporte_alumnos': (BuildContext context) =>
+                const ReporteAlumnosPage(),
+            'reporte_envio': (BuildContext context) => const ReporteEnvioPage(),
+          }),
     );
   }
 }
-

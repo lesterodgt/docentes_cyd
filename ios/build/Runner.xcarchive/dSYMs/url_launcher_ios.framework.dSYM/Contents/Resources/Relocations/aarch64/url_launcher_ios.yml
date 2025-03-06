@@ -1,0 +1,57 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/lester/Library/Developer/Xcode/DerivedData/Runner-deaudqoldtgzgdfkvyxxnpzferwr/Build/Intermediates.noindex/ArchiveIntermediates/Runner/IntermediateBuildFilesPath/UninstalledProducts/iphoneos/url_launcher_ios.framework/url_launcher_ios'
+relocations:
+  - { offset: 0x5CE59, size: 0x8, addend: 0x0, symName: _url_launcher_iosVersionString, symObjAddr: 0x0, symBinAddr: 0x9F00, symSize: 0x0 }
+  - { offset: 0x5CE8E, size: 0x8, addend: 0x0, symName: _url_launcher_iosVersionNumber, symObjAddr: 0x30, symBinAddr: 0x9F30, symSize: 0x0 }
+  - { offset: 0x5CECB, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession initWithURL:completion:]', symObjAddr: 0x0, symBinAddr: 0x8000, symSize: 0xE8 }
+  - { offset: 0x5D08B, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession initWithURL:completion:]', symObjAddr: 0x0, symBinAddr: 0x8000, symSize: 0xE8 }
+  - { offset: 0x5D0E2, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession safariViewController:didCompleteInitialLoad:]', symObjAddr: 0xE8, symBinAddr: 0x80E8, symSize: 0x110 }
+  - { offset: 0x5D173, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession safariViewControllerDidFinish:]', symObjAddr: 0x1F8, symBinAddr: 0x81F8, symSize: 0x4C }
+  - { offset: 0x5D1C2, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession close]', symObjAddr: 0x244, symBinAddr: 0x8244, symSize: 0x3C }
+  - { offset: 0x5D1F5, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession completion]', symObjAddr: 0x280, symBinAddr: 0x8280, symSize: 0x8 }
+  - { offset: 0x5D22C, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession setCompletion:]', symObjAddr: 0x288, symBinAddr: 0x8288, symSize: 0x8 }
+  - { offset: 0x5D26B, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession url]', symObjAddr: 0x290, symBinAddr: 0x8290, symSize: 0x8 }
+  - { offset: 0x5D2A2, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession setUrl:]', symObjAddr: 0x298, symBinAddr: 0x8298, symSize: 0xC }
+  - { offset: 0x5D2E3, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession safari]', symObjAddr: 0x2A4, symBinAddr: 0x82A4, symSize: 0x8 }
+  - { offset: 0x5D31A, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession setSafari:]', symObjAddr: 0x2AC, symBinAddr: 0x82AC, symSize: 0xC }
+  - { offset: 0x5D35B, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession didFinish]', symObjAddr: 0x2B8, symBinAddr: 0x82B8, symSize: 0x8 }
+  - { offset: 0x5D392, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession setDidFinish:]', symObjAddr: 0x2C0, symBinAddr: 0x82C0, symSize: 0x8 }
+  - { offset: 0x5D3D1, size: 0x8, addend: 0x0, symName: '-[FLTURLLaunchSession .cxx_destruct]', symObjAddr: 0x2C8, symBinAddr: 0x82C8, symSize: 0x48 }
+  - { offset: 0x5D404, size: 0x8, addend: 0x0, symName: '-[FULUIApplicationLauncher canOpenURL:]', symObjAddr: 0x310, symBinAddr: 0x8310, symSize: 0x68 }
+  - { offset: 0x5D447, size: 0x8, addend: 0x0, symName: '-[FULUIApplicationLauncher openURL:options:completionHandler:]', symObjAddr: 0x378, symBinAddr: 0x8378, symSize: 0x94 }
+  - { offset: 0x5D4A6, size: 0x8, addend: 0x0, symName: '+[FLTURLLauncherPlugin registerWithRegistrar:]', symObjAddr: 0x40C, symBinAddr: 0x840C, symSize: 0x78 }
+  - { offset: 0x5D54E, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin init]', symObjAddr: 0x484, symBinAddr: 0x8484, symSize: 0x4C }
+  - { offset: 0x5D585, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin initWithLauncher:]', symObjAddr: 0x4D0, symBinAddr: 0x84D0, symSize: 0x78 }
+  - { offset: 0x5D5CC, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin canLaunchURL:error:]', symObjAddr: 0x548, symBinAddr: 0x8548, symSize: 0xD8 }
+  - { offset: 0x5D633, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin launchURL:universalLinksOnly:completion:]', symObjAddr: 0x620, symBinAddr: 0x8620, symSize: 0x1AC }
+  - { offset: 0x5D6D7, size: 0x8, addend: 0x0, symName: '___64-[FLTURLLauncherPlugin launchURL:universalLinksOnly:completion:]_block_invoke', symObjAddr: 0x7CC, symBinAddr: 0x87CC, symSize: 0x50 }
+  - { offset: 0x5D743, size: 0x8, addend: 0x0, symName: ___copy_helper_block_e8_32b, symObjAddr: 0x81C, symBinAddr: 0x881C, symSize: 0x10 }
+  - { offset: 0x5D76C, size: 0x8, addend: 0x0, symName: ___destroy_helper_block_e8_32s, symObjAddr: 0x82C, symBinAddr: 0x882C, symSize: 0x8 }
+  - { offset: 0x5D78B, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin openSafariViewControllerWithURL:completion:]', symObjAddr: 0x834, symBinAddr: 0x8834, symSize: 0x218 }
+  - { offset: 0x5D81F, size: 0x8, addend: 0x0, symName: '___67-[FLTURLLauncherPlugin openSafariViewControllerWithURL:completion:]_block_invoke', symObjAddr: 0xA4C, symBinAddr: 0x8A4C, symSize: 0x30 }
+  - { offset: 0x5D85A, size: 0x8, addend: 0x0, symName: ___copy_helper_block_e8_32w, symObjAddr: 0xA7C, symBinAddr: 0x8A7C, symSize: 0xC }
+  - { offset: 0x5D883, size: 0x8, addend: 0x0, symName: ___destroy_helper_block_e8_32w, symObjAddr: 0xA88, symBinAddr: 0x8A88, symSize: 0x8 }
+  - { offset: 0x5D8A2, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin closeSafariViewControllerWithError:]', symObjAddr: 0xA90, symBinAddr: 0x8A90, symSize: 0x30 }
+  - { offset: 0x5D8E1, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin topViewController]', symObjAddr: 0xAC0, symBinAddr: 0x8AC0, symSize: 0x90 }
+  - { offset: 0x5D918, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin topViewControllerFromViewController:]', symObjAddr: 0xB50, symBinAddr: 0x8B50, symSize: 0x12C }
+  - { offset: 0x5D995, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin invalidURLErrorForURLString:]', symObjAddr: 0xC7C, symBinAddr: 0x8C7C, symSize: 0x80 }
+  - { offset: 0x5D9D8, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin currentSession]', symObjAddr: 0xCFC, symBinAddr: 0x8CFC, symSize: 0x8 }
+  - { offset: 0x5DA0F, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin setCurrentSession:]', symObjAddr: 0xD04, symBinAddr: 0x8D04, symSize: 0xC }
+  - { offset: 0x5DA50, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin launcher]', symObjAddr: 0xD10, symBinAddr: 0x8D10, symSize: 0x8 }
+  - { offset: 0x5DA87, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin setLauncher:]', symObjAddr: 0xD18, symBinAddr: 0x8D18, symSize: 0xC }
+  - { offset: 0x5DAC8, size: 0x8, addend: 0x0, symName: '-[FLTURLLauncherPlugin .cxx_destruct]', symObjAddr: 0xD24, symBinAddr: 0x8D24, symSize: 0x30 }
+  - { offset: 0x5DCDD, size: 0x8, addend: 0x0, symName: _FULUrlLauncherApiGetCodec, symObjAddr: 0x0, symBinAddr: 0x8D54, symSize: 0x44 }
+  - { offset: 0x5DCEB, size: 0x8, addend: 0x0, symName: _FULUrlLauncherApiGetCodec, symObjAddr: 0x0, symBinAddr: 0x8D54, symSize: 0x44 }
+  - { offset: 0x5DD11, size: 0x8, addend: 0x0, symName: _FULUrlLauncherApiGetCodec.sSharedObject, symObjAddr: 0x37A8, symBinAddr: 0xD8B8, symSize: 0x0 }
+  - { offset: 0x5DD21, size: 0x8, addend: 0x0, symName: _FULUrlLauncherApiSetup, symObjAddr: 0x44, symBinAddr: 0x8D98, symSize: 0x2C8 }
+  - { offset: 0x5DE0C, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke, symObjAddr: 0x30C, symBinAddr: 0x9060, symSize: 0xEC }
+  - { offset: 0x5DF06, size: 0x8, addend: 0x0, symName: _GetNullableObjectAtIndex, symObjAddr: 0x3F8, symBinAddr: 0x914C, symSize: 0x70 }
+  - { offset: 0x5DF51, size: 0x8, addend: 0x0, symName: _wrapResult, symObjAddr: 0x468, symBinAddr: 0x91BC, symSize: 0x1EC }
+  - { offset: 0x5DF8C, size: 0x8, addend: 0x0, symName: ___copy_helper_block_e8_32s, symObjAddr: 0x654, symBinAddr: 0x93A8, symSize: 0x8 }
+  - { offset: 0x5DFB3, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke.5, symObjAddr: 0x664, symBinAddr: 0x93B0, symSize: 0xF8 }
+  - { offset: 0x5E07A, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke_2, symObjAddr: 0x75C, symBinAddr: 0x94A8, symSize: 0x48 }
+  - { offset: 0x5E10F, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke.9, symObjAddr: 0x7B4, symBinAddr: 0x94F0, symSize: 0xBC }
+  - { offset: 0x5E1B5, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke_2.10, symObjAddr: 0x870, symBinAddr: 0x95AC, symSize: 0x48 }
+  - { offset: 0x5E24A, size: 0x8, addend: 0x0, symName: ___FULUrlLauncherApiSetup_block_invoke_3, symObjAddr: 0x8B8, symBinAddr: 0x95F4, symSize: 0x94 }
+...

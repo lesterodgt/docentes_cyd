@@ -8,14 +8,11 @@ import '../utils/constantes.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
-  
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
   @override
   void initState() {
     super.initState();
@@ -27,22 +24,22 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         body: SafeArea(
             child: Stack(children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(imagenLogin),
-                fit: BoxFit.cover,
-              ),
-            ),
+      Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(imagenLogin),
+            fit: BoxFit.cover,
           ),
-          ListView(
-            primary: true,
-            children: <Widget>[
-              const SizedBox(height: 300.0),
-              _loginForm(context),
-            ],
-          ),
-        ])));
+        ),
+      ),
+      ListView(
+        primary: true,
+        children: <Widget>[
+          const SizedBox(height: 300.0),
+          _loginForm(context),
+        ],
+      ),
+    ])));
   }
 
   Widget _loginForm(BuildContext context) {
@@ -113,48 +110,50 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _crearPassword(LoginProvider loginProvider, BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextFormField(
-          keyboardType: TextInputType.visiblePassword,
-          style: const TextStyle(color: Colors.green, fontSize: 20),
-          obscureText: !loginProvider.mostrarContrasenia,
-          decoration: const InputDecoration(
-            icon: Icon(Icons.lock_open),
-            labelText: "Contraseña",
-            fillColor: Colors.white,
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.amber),
-            ),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextFormField(
+        keyboardType: TextInputType.visiblePassword,
+        style: const TextStyle(color: Colors.green, fontSize: 20),
+        obscureText: !loginProvider.mostrarContrasenia,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.lock_open),
+          labelText: "Contraseña",
+          fillColor: Colors.white,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.amber),
           ),
-          onChanged: (String value) {
-            loginProvider.changeContrasenia(value);
-          },
-        ),);
+        ),
+        onChanged: (String value) {
+          loginProvider.changeContrasenia(value);
+        },
+      ),
+    );
   }
 
   Widget _crearBoton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 15.0),
       child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
-            
-          ),
-          onPressed: () async {
-            final loginProvider =
-                Provider.of<LoginProvider>(context, listen: false);
-            List resultado = await loginProvider.login();
-            if (resultado[0]) {
-              Toast.show(resultado[1]+"....",
-                  duration: Toast.lengthLong, gravity: Toast.center);
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacementNamed(context, 'home');
-            } else {
-              Toast.show(resultado[1],
-                  duration: Toast.lengthLong, gravity: Toast.center);
-            }
-          },
-          child: const Text('INICIAR'),),
+        style: ButtonStyle(
+          shape: WidgetStateProperty.all<OutlinedBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
+        ),
+        onPressed: () async {
+          final loginProvider =
+              Provider.of<LoginProvider>(context, listen: false);
+          List resultado = await loginProvider.login();
+          if (resultado[0]) {
+            Toast.show(resultado[1] + "....",
+                duration: Toast.lengthLong, gravity: Toast.center);
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacementNamed(context, 'home');
+          } else {
+            Toast.show(resultado[1],
+                duration: Toast.lengthLong, gravity: Toast.center);
+          }
+        },
+        child: const Text('INICIAR'),
+      ),
     );
   }
 }

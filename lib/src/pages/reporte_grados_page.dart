@@ -5,8 +5,6 @@ import '../model/estado_provider.dart';
 import '../model/grado_model.dart';
 import '../provider/alumnos_provider.dart';
 import '../provider/grados_provider.dart';
-import '../utils/constantes.dart';
-
 
 class ReporteGradosPage extends StatefulWidget {
   const ReporteGradosPage({super.key});
@@ -26,10 +24,10 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Grados", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        title: const Text("Grados",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.blueAccent,
       ),
       body: Column(
@@ -59,7 +57,9 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
           notifier.cargarDatos();
           return const Center(child: CircularProgressIndicator());
         } else if (notifier.estado == EstadoProvider.error) {
-          return Center(child: Text(notifier.failure!.message, style: const TextStyle(color: Colors.red)));
+          return Center(
+              child: Text(notifier.failure!.message,
+                  style: const TextStyle(color: Colors.red)));
         } else if (notifier.estado == EstadoProvider.loaded) {
           if (!cargado) {
             gradosDiario = notifier.gradosDiario;
@@ -81,7 +81,8 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
         onTap: () {
-          final alumnosProvider = Provider.of<AlumnosProvider>(context, listen: false);
+          final alumnosProvider =
+              Provider.of<AlumnosProvider>(context, listen: false);
           alumnosProvider.cargarDatos(grado.id);
           Navigator.pushNamed(context, 'reporte_alumnos', arguments: grado);
         },
@@ -110,7 +111,8 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: jornada == "1" ? Colors.blue : Colors.grey,
             ),
-            child: const Text("Diario", style: TextStyle(fontSize: 17, color: Colors.white)),
+            child: const Text("Diario",
+                style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -123,7 +125,8 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: jornada == "2" ? Colors.blue : Colors.grey,
             ),
-            child: const Text("Fin de semana", style: TextStyle(fontSize: 17, color: Colors.white)),
+            child: const Text("Fin de semana",
+                style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
         ],
       ),
@@ -140,7 +143,8 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
           labelText: "Buscar",
           hintText: "Buscar",
           prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25.0))),
         ),
       ),
     );
@@ -155,7 +159,9 @@ class _ReporteGradosPageState extends State<ReporteGradosPage> {
     }
     query = query.toLowerCase();
     List<Grado> base = jornada == "1" ? gradosDiario : gradosFinDeSemana;
-    List<Grado> result = base.where((grado) => grado.nombre.toLowerCase().contains(query)).toList();
+    List<Grado> result = base
+        .where((grado) => grado.nombre.toLowerCase().contains(query))
+        .toList();
     setState(() {
       gradosMostrar = result;
     });

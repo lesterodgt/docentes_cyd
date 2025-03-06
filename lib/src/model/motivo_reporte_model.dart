@@ -1,9 +1,6 @@
 import 'dart:convert';
 
-import 'curso_model.dart';
-
 class MotivosReporte {
-  
   List<GrupoReporte> motivos = [];
   Map<String, GrupoReporte> tipoReporteMap = {};
 
@@ -18,19 +15,18 @@ class MotivosReporte {
   }
 
   Map<String, dynamic> toJson() => {
-    'motivos': jsonEncode(motivos),
-  };
+        'motivos': jsonEncode(motivos),
+      };
 
   MotivosReporte.vacio() {
     motivos = [];
   }
-
 }
 
 class GrupoReporte {
   late String id;
   late String descripcion;
-  List<TipoReporte> tipos =[];
+  List<TipoReporte> tipos = [];
 
   GrupoReporte({
     required this.id,
@@ -47,11 +43,10 @@ class GrupoReporte {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'respuestas': jsonEncode(tipos),
-    'descripcion': descripcion,
-  };
-
+        'id': id,
+        'respuestas': jsonEncode(tipos),
+        'descripcion': descripcion,
+      };
 }
 
 class TipoReporte {
@@ -67,6 +62,4 @@ class TipoReporte {
     id = json['id'].toString();
     descripcion = json['descripcion'].trim();
   }
-
 }
-

@@ -1,8 +1,6 @@
 import 'package:docentes_cyd/src/provider/cursos_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sticky_headers/sticky_headers.dart';
-import 'package:toast/toast.dart';
 
 import '../model/alumno_model.dart';
 import '../model/estado_provider.dart';
@@ -27,25 +25,26 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
       cargado = true;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Estudiantes', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            encabezado(),
-            Expanded(child: contenido(context)),
-          ],
+        appBar: AppBar(
+          title: const Text('Estudiantes',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          backgroundColor: Colors.blueAccent,
         ),
-      ),
-      floatingActionButton:botonEnviar(grado)
-    );
+        body: Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              encabezado(),
+              Expanded(child: contenido(context)),
+            ],
+          ),
+        ),
+        floatingActionButton: botonEnviar(grado));
   }
 
   Widget botonEnviar(Grado grado) {
-    final alumnosTodos = Provider.of<AlumnosProvider>(context, listen: false).alumnosTodos;
+    final alumnosTodos =
+        Provider.of<AlumnosProvider>(context, listen: false).alumnosTodos;
     bool hayMarcados = alumnosTodos.any((alumno) => alumno.marcado);
     //bool hayMarcados = true;
     return FloatingActionButton(
@@ -73,7 +72,10 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
         child: Text(
           grado.nombre,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+          style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.blueGrey),
         ),
       ),
     );
@@ -86,7 +88,9 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
           notifier.cargarDatos(grado.id);
           return const Center(child: CircularProgressIndicator());
         } else if (notifier.estado == EstadoProvider.error) {
-          return Center(child: Text(notifier.failure!.message, style: const TextStyle(color: Colors.red)));
+          return Center(
+              child: Text(notifier.failure!.message,
+                  style: const TextStyle(color: Colors.red)));
         } else if (notifier.estado == EstadoProvider.loaded) {
           return listaEstudiantes(context, notifier.alumnosTodos);
         } else {
@@ -144,7 +148,8 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
         leading: iconoFinal,
         title: Text(
           alumno.nombreAlumno,
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: textColor),
+          style: TextStyle(
+              fontSize: 16.0, fontWeight: FontWeight.w500, color: textColor),
         ),
         onTap: alumno.estado == "1"
             ? null // No permite tocar si el alumno tiene permiso
@@ -156,7 +161,6 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
       ),
     );
   }
-
 
   Widget opciones(List<Alumno> alumnos) {
     return Padding(
@@ -173,7 +177,8 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
               });
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            child: const Text('Todos', style: TextStyle(fontSize: 17, color: Colors.white)),
+            child: const Text('Todos',
+                style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -183,8 +188,10 @@ class _ReporteAlumnosPageState extends State<ReporteAlumnosPage> {
                 }
               });
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
-            child: const Text('Ninguno', style: TextStyle(fontSize: 17, color: Colors.white)),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent),
+            child: const Text('Ninguno',
+                style: TextStyle(fontSize: 17, color: Colors.white)),
           ),
         ],
       ),
